@@ -1,79 +1,46 @@
-# **TEMPLATE**
-## Quick set-up for DE/AE work
-### Featuring typical repo set-up, + Claude, UV, and Github Actions
-
-- You can use this template out of the box or just upload using data_engineering_repo_bootstrap.sh
-    - For the script shell (WORK IN PROGRESS)
-```bash
-    ./data_engineering_repo_bootstrap.sh
-```
+### MLOps Monitoring
 
 ### Setup
 uv venv
 source .venv/bin/activate
 uv sync
 
-### Run ETL
-make run
-
-### Run Spark
-make spark
-
-### Run SQL
-make sql
-
-### Run tests
-make test
-
-### Claude
-- CLAUDE.MD 
-- Agents
-
-### Notes
-- Uses DuckDB for local analytics
-- Includes optional Spark + Airflow
-- Designed for fast iteration
-
-#### Project Structure
-```bash
-├── src/
-│   ├── pipelines/
-│   │   ├── etl_api_to_duckdb.py
-│   │   ├── spark_job.py
-│   │   └── sql_runner.py
-│   ├── utils/
-│   │   ├── logger.py
-│   │   └── config.py
-│   └── main.py
-│
-├── tests/
-│   └── test_main.py
-│
-├── sql/
-│   └── example.sql
-│
-├── airflow/dags/
-│   └── example_dag.py
-│
-├── docker/
-│   ├── Dockerfile
-│   └── docker-compose.yml
-│
-├── .vscode/settings.json
-├── .pre-commit-config.yaml
-├── pyproject.toml
-├── Makefile
-├── README.md
-├── .gitignore
-├── CLAUDE.md
-├── .claude
-│   ├── agents
-│   ├── agent-memory
-├── .github
-│   ├── workflows/ci.yml
-└── .env.example
-
+#### Step 1
+- Create a training dataset and save as an artifact
+``` bash uv run src/train.py 
 ```
+
+#### Step 1
+- Create a training dataset and save as an artifact
+- This is saved as an artifact & we will use it as a baseline
+``` bash uv run src/train.py 
+```
+
+#### Step 2
+- Create a daily inference dataset as incoming batch
+- Save it as a CSV in data
+``` bash uv run src/generate_inference.py 
+```
+
+#### Step 3
+- Create a daily drift check
+- This is saved as an artifact for monitoring
+``` bash uv run src/check_for_daily_drift.py
+```
+#### Step 4
+- Simulate multiple days 
+``` bash    
+        for i in {1..5}
+        do
+        uv run src/generate_inference.py
+        uv run src/check_for_daily_drift.py
+        done
+```
+
+
+
+
+
 
 
 
