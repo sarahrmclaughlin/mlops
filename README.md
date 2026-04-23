@@ -1,5 +1,8 @@
 ### MLOps Monitoring
 
+##### Objective: Test out some MLOps workflows comparing daily inference to training
+- **BONUS**: with Claude 
+
 ### Setup
 uv venv
 source .venv/bin/activate
@@ -7,26 +10,19 @@ uv sync
 
 #### Step 1
 - Create a training dataset and save as an artifact
-``` bash uv run src/train.py 
-```
-
-#### Step 1
-- Create a training dataset and save as an artifact
 - This is saved as an artifact & we will use it as a baseline
-``` bash uv run src/train.py 
-```
+```bash uv run src/train.py ```
 
 #### Step 2
 - Create a daily inference dataset as incoming batch
 - Save it as a CSV in data
-``` bash uv run src/generate_inference.py 
-```
+``` bash uv run src/generate_inference.py ```
 
 #### Step 3
 - Create a daily drift check
 - This is saved as an artifact for monitoring
-``` bash uv run src/check_for_daily_drift.py
-```
+``` bash uv run src/check_for_daily_drift.py```
+
 #### Step 4
 - Simulate multiple days 
 ``` bash    
@@ -40,8 +36,7 @@ uv sync
 - drift_dag.py script for monitoring
 - Update docker-compose which will run airflow dag
 - create airflow user id/pw, save in .env, CLI run once.
-```bash docker exec airflow-webserver airflow users list
-```
+```bash docker exec airflow-webserver airflow users list```
 
 
 
