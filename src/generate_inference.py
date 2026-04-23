@@ -1,5 +1,6 @@
 """Simulate daily inference process with drift for baseline comparison."""
 
+import sys
 import numpy as np
 import pandas as pd
 import os
@@ -7,7 +8,11 @@ from datetime import datetime
 import logging
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-os.makedirs("data", exist_ok=True)
+
+airflow_path = "/opt/airflow"
+os.makedirs(f"{airflow_path}/data", exist_ok=True)
+
+ds = sys.argv[1]  # <-- from Airflow
 
 # simulate drift toggle
 DRIFT = True
@@ -28,7 +33,7 @@ df = pd.DataFrame({
 
 logging.info(f"✅ Inference data generated with drift={DRIFT}")
 logging.info(f"df.head():\n{df.head()}")
-filename = f"data/inference_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+filename = f"{airflow_path}/data/inference_{ds}.csv"
 df.to_csv(filename, index=False)
 
 logging.info(f"✅ Inference data saved: {filename}")

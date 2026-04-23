@@ -1,22 +1,45 @@
 from airflow import DAG
-from airflow.operators.bash import BashOperator
-from datetime import datetime
+from airflow.operators.python import PythonOperator
+from datetime import datetime, timedelta
+import subprocess
+import logging
+
+default_args = {
+    "owner": "sarah",
+    "retries": 2,
+    "retry_delay": timedelta(minutes=5),
+}
+
+def run_script(script_name, date_str):
+    logging.info(f"Running {script_name} with date {date_str}")
+    result = subprocess.run(
+        ["python", f"/opt/airflow/src/{script_name}", date_str],
+        capture_output=True,
+        text=True
+    )
+    logging.info(f"STDOUT: {result.stdout}")
+    logging.info(f"STDERR: {result.stderr}")
+
+    result.check_returncode()
 
 with DAG(
-    "drift_pipeline",
-    start_date=datetime(2024, 1, 1),
+    dag_id="drift_pipeline",
+    default_args=default_args,
     schedule="@daily",
-    catchup=False
+    start_date=datetime(2024, 1, 1),
+    catchup=False,
 ) as dag:
 
-    generate = BashOperator(
+    generate = PythonOperator(
         task_id="generate_data",
-        bash_command="python src/generate_inference.py"
+        python_callable=run_script,
+        op_args=["generate_inference.py", "{{ ds }}"],
     )
 
-    drift = BashOperator(
+    drift = PythonOperator(
         task_id="check_drift",
-        bash_command="python src/drift.py"
+        python_callable=run_script,
+        op_args=["check_for_daily_drift.py", "{{ ds }}"],
     )
 
     generate >> drift

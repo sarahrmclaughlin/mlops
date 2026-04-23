@@ -36,6 +36,12 @@ uv sync
         uv run src/check_for_daily_drift.py
         done
 ```
+#### Step 4 Set-up DAG
+- drift_dag.py script for monitoring
+- Update docker-compose which will run airflow dag
+- create airflow user id/pw, save in .env, CLI run once.
+```bash docker exec airflow-webserver airflow users list
+```
 
 
 
