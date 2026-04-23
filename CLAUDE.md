@@ -1,6 +1,6 @@
 # Project Context
 
-This is a data engineering template using UV.
+This is a data engineering MLOps project using UV and Claude.
 
 ## Commands
 - uv sync
@@ -10,7 +10,7 @@ This is a data engineering template using UV.
 # Compact instructions
 When using compact, focus on code samples and API usage
 
-# CLAUDE.md
+## CLAUDE.md
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
 
