@@ -1,0 +1,10 @@
+{
+  "feature_1": {
+    "p_value": 3.591584221977917e-158,
+    "drift_detected": 1
+  },
+  "feature_2": {
+    "p_value": 3.8749095452605426e-113,
+    "drift_detected": 1
+  }
+}
