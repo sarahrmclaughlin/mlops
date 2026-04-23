@@ -1,7 +1,9 @@
 ### MLOps Monitoring
 
 ##### Objective: Test out some MLOps workflows comparing daily inference to training
-- **BONUS**: with Claude 
+- It uses Docker containers to manage Airflow runs on the script that monitors drift.
+- **BONUS**: with Claude
+- TODO: Add evidentlyai integration
 
 ### Setup
 uv venv
