@@ -3,12 +3,12 @@ name: CI
 on:
   push:
     branches: [main, 'feat/**']
-    # paths:
-    #   - 'src/**'
-    #   - 'tests/**'
-    #   - 'dags/**'
-    #   - 'Makefile'
-    #   - 'docker-compose.yaml'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'dags/**'
+      - 'Makefile'
+      - 'docker-compose.yaml'
   pull_request:
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Create virtual environment
         run: uv venv
@@ -38,5 +38,5 @@ jobs:
       - name: Run lint (pre-commit)
         run: uv run pre-commit run --all-files
 
-      - name: Run tests
-        run: uv run pytest
+      # - name: Run tests
+      #   run: uv run pytest

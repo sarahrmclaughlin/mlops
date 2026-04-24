@@ -48,3 +48,36 @@ with open(f"{airflow_path}/artifacts/drift_report.json", "w") as f:
 
 logging.info(f"✅ Drift check complete on {latest_file}")
 logging.info(f"Drift results:\n{json.dumps(results, indent=2)}")
+
+logging.info("Working on drift history file...")
+history_file = f"{airflow_path}/artifacts/drift_history.csv"
+
+rows = []
+
+for feature, vals in results.items():
+    rows.append({
+        "date": date_str,
+        "feature": feature,
+        "p_value": vals["p_value"],
+        "drift_detected": vals["drift_detected"]
+    })
+
+if any(v["drift_detected"] for v in results.values()):
+    logging.info("🚨 DRIFT DETECTED!")
+else:
+    logging.info("✅ No drift detected.")
+
+df_new = pd.DataFrame(rows)
+
+# append or create
+if os.path.exists(history_file):
+    logging.info(f"Existing history found. Appending new results to {history_file}")
+    df_existing = pd.read_csv(history_file)
+    df_final = pd.concat([df_existing, df_new], ignore_index=True)
+else:
+    logging.info(f"No existing history found. Creating new file {history_file}")
+    df_final = df_new
+
+df_final.to_csv(history_file, index=False)
+
+logging.info(f"✅ Drift history updated: {history_file}")

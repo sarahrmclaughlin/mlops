@@ -6,8 +6,8 @@ import logging
 
 default_args = {
     "owner": "sarah",
-    "retries": 2,
-    "retry_delay": timedelta(minutes=5),
+    "retries": 1,
+    "retry_delay": timedelta(minutes=1),
 }
 
 def run_script(script_name, date_str):
