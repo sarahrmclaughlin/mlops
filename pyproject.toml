@@ -15,6 +15,10 @@ dependencies = [
     "scipy>=1.17.1",
 ]
 
+# TODO: remove this and refactor repo
+[tool.setuptools]
+packages = ["dags"]  # Explicitly include the 'src' directory as the package
+
 [dependency-groups]
 dev = [
     "black>=26.3.1",
