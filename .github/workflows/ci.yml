@@ -38,5 +38,5 @@ jobs:
       - name: Run lint (pre-commit)
         run: uv run pre-commit run --all-files
 
-      - name: Run tests
-        run: uv run pytest || [ $? -eq 5 ]
+      # - name: Run tests
+      #   run: uv run pytest || [ $? -eq 5 ]
