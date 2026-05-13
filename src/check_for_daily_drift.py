@@ -1,21 +1,25 @@
 """Check for data drift by comparing latest inference data to baseline stats."""
-import json
-import sys
-import pandas as pd
-import numpy as np
-import glob
-from scipy.stats import ks_2samp
-import os
-import logging
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+import glob
+import json
+import logging
+import os
+import sys
+
+import numpy as np
+import pandas as pd
+from scipy.stats import ks_2samp
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 date_str = sys.argv[1]
 
 airflow_path = "/opt/airflow"
 os.makedirs(f"{airflow_path}/artifacts", exist_ok=True)
 
-    
+
 # load baseline
 with open(f"{airflow_path}/artifacts/baseline_stats.json") as f:
     baseline = json.load(f)
@@ -31,17 +35,12 @@ results = {}
 for col in df.columns:
     # simulate baseline distribution from stats
     baseline_sample = np.random.normal(
-        baseline[col]["mean"],
-        baseline[col]["std"],
-        1000
+        baseline[col]["mean"], baseline[col]["std"], 1000
     )
 
     stat, p_value = ks_2samp(baseline_sample, df[col])
 
-    results[col] = {
-        "p_value": float(p_value),
-        "drift_detected": int(p_value < 0.05)
-    }
+    results[col] = {"p_value": float(p_value), "drift_detected": int(p_value < 0.05)}
 
 with open(f"{airflow_path}/artifacts/drift_report.json", "w") as f:
     json.dump(results, f, indent=2)
@@ -55,12 +54,14 @@ history_file = f"{airflow_path}/artifacts/drift_history.csv"
 rows = []
 
 for feature, vals in results.items():
-    rows.append({
-        "date": date_str,
-        "feature": feature,
-        "p_value": vals["p_value"],
-        "drift_detected": vals["drift_detected"]
-    })
+    rows.append(
+        {
+            "date": date_str,
+            "feature": feature,
+            "p_value": vals["p_value"],
+            "drift_detected": vals["drift_detected"],
+        }
+    )
 
 if any(v["drift_detected"] for v in results.values()):
     logging.info("🚨 DRIFT DETECTED!")
