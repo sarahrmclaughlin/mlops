@@ -1,4 +1,4 @@
-"""Check for data drift by comparing latest inference data to baseline stats."""
+"""Check for data drift by comparing latest inference data to baseline."""
 
 import glob
 import json
@@ -40,7 +40,10 @@ for col in df.columns:
 
     stat, p_value = ks_2samp(baseline_sample, df[col])
 
-    results[col] = {"p_value": float(p_value), "drift_detected": int(p_value < 0.05)}
+    results[col] = {
+        "p_value": float(p_value),
+        "drift_detected": int(p_value < 0.05),
+    }
 
 with open(f"{airflow_path}/artifacts/drift_report.json", "w") as f:
     json.dump(results, f, indent=2)
@@ -72,11 +75,13 @@ df_new = pd.DataFrame(rows)
 
 # append or create
 if os.path.exists(history_file):
-    logging.info(f"Existing history found. Appending new results to {history_file}")
+    msg = f"Existing history found. Appending to {history_file}"
+    logging.info(msg)
     df_existing = pd.read_csv(history_file)
     df_final = pd.concat([df_existing, df_new], ignore_index=True)
 else:
-    logging.info(f"No existing history found. Creating new file {history_file}")
+    msg = f"No existing history found. Creating {history_file}"
+    logging.info(msg)
     df_final = df_new
 
 df_final.to_csv(history_file, index=False)
