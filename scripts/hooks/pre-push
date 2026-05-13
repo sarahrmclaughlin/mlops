@@ -36,30 +36,6 @@ fi
 echo -e "${GREEN}  Lint passed.${RESET}"
 echo ""
 
-# echo -e "${BOLD}[2/2] Running tests (pytest)...${RESET}"
-# set +e
-# uv run pytest
-# pytest_exit=$?
-# set -e
-
-# Exit code 5 = no tests collected (allowed for now)
-# Exit code 0 = tests passed
-# Other exit codes = test failure
-# if [ $pytest_exit -eq 0 ] || [ $pytest_exit -eq 5 ]; then
-#     if [ $pytest_exit -eq 0 ]; then
-#         echo -e "${GREEN}  Tests passed.${RESET}"
-#     else
-#         echo -e "${GREEN}  No tests yet (0 tests collected).${RESET}"
-#     fi
-#     echo ""
-# else
-#     echo ""
-#     echo -e "${RED}${BOLD}PUSH ABORTED: Tests failed.${RESET}"
-#     echo -e "  Fix the failing tests, then push again."
-#     echo -e "  Tip: run ${YELLOW}make test${RESET} to debug interactively."
-#     echo ""
-#     exit 1
-# fi
 
 echo -e "${GREEN}${BOLD}All checks passed. Pushing...${RESET}"
 echo ""
