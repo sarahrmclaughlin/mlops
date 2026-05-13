@@ -17,8 +17,14 @@ feature_1 = np.random.normal(10, 2, 1000)
 feature_2 = np.random.normal(50, 5, 1000)
 
 baseline = {
-    "feature_1": {"mean": float(np.mean(feature_1)), "std": float(np.std(feature_1))},
-    "feature_2": {"mean": float(np.mean(feature_2)), "std": float(np.std(feature_2))},
+    "feature_1": {
+        "mean": float(np.mean(feature_1)),
+        "std": float(np.std(feature_1)),
+    },
+    "feature_2": {
+        "mean": float(np.mean(feature_2)),
+        "std": float(np.std(feature_2)),
+    },
 }
 
 logging.info(f"✅ Baseline stats calculated: {baseline}")
