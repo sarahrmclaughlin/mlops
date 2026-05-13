@@ -1,6 +1,6 @@
-"""Airflow DAG to run the drift detection pipeline daily. This is a useful file. Please read it carefully."""
+"""Airflow DAG to run the drift detection pipeline daily."""
+
 import logging
-import os
 import subprocess
 from datetime import datetime, timedelta
 
