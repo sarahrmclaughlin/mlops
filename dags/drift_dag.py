@@ -6,11 +6,9 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
+
 default_args = {
-    "owner": "sarah",
-    "retries": 1,
-    "retry_delay": timedelta(minutes=1),
-}
+    "owner": "sarah","retries": 1,"retry_delay": timedelta(minutes=1),}
 
 
 def run_script(script_name, date_str):
